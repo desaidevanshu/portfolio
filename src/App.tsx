@@ -82,7 +82,7 @@ function App() {
         <div className="about-content">
           <div className="profile-image">
             <img 
-              src="/src/DD.jpg"
+              src="/DD.jpg"
               alt="Devanshu"
               className="profile-pic"
             />
