@@ -47,6 +47,25 @@ function App() {
       description: "Participated as an open source contributor."
     }
   ];
+  const onButtonClick = () => {
+     
+    
+    fetch("Devanshu_Resume.pdf").then((response) => {
+        response.blob().then((blob) => {
+         
+            // Creating new object of PDF file
+            const fileURL =
+                window.URL.createObjectURL(blob);
+                 
+            // Setting various property values
+            let alink = document.createElement("a");
+            alink.href = fileURL;
+            alink.download = "Devanshu_Resume.pdf";
+            alink.click();
+            alert("Devanshu Resume Downloaded!!");
+        });
+    });
+};
 
   return (
     <div className="app">
@@ -101,6 +120,11 @@ function App() {
               <a href="https://www.linkedin.com/in/devanshu-desai-70704b1ab/" target="_blank" rel="noopener noreferrer">
                 <Linkedin size={24} />
               </a>
+              <button  className="btn third" onClick={onButtonClick}>
+                Resume
+              </button>
+        
+
             </div>
           </div>
         </div>
