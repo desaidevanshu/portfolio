@@ -154,7 +154,7 @@ function App() {
         id: 1,
         title: "Weather Web",
         description: "This website shows the current time weather of your location. Using the weather API to fetch the data and display it accordingly.",
-        imageUrl: "/src/Weather.png",
+        imageUrl: "/Weather.png",
 
         tags: ["HTML", "CSS", "JavaScript"]
       },
