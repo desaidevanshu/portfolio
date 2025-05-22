@@ -5,25 +5,29 @@ import './styles.css';
 function App() {
   const [isVisible, setIsVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(prefersDark);
+
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(window.pageYOffset > 300);
     };
 
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
+  useEffect(() => {
+    document.body.classList.remove('light-mode', 'dark-mode');
+    document.body.classList.add(darkMode ? 'dark-mode' : 'light-mode');
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const skills = {
@@ -45,44 +49,54 @@ function App() {
       position: "Contributor",
       period: "2023",
       description: "Participated as an open source contributor."
+    },
+    {
+      role: "KJSCE SDC",
+      position: "Web Developer",
+      period: "2025",
+      description: "Worked on the SDC platform for KJSCE."
     }
   ];
+
   const onButtonClick = () => {
-     
-    
     fetch("Devanshu_Resume.pdf").then((response) => {
-        response.blob().then((blob) => {
-         
-            // Creating new object of PDF file
-            const fileURL =
-                window.URL.createObjectURL(blob);
-                 
-            // Setting various property values
-            let alink = document.createElement("a");
-            alink.href = fileURL;
-            alink.download = "Devanshu_Resume.pdf";
-            alink.click();
-            alert("Devanshu Resume Downloaded!!");
-        });
+      response.blob().then((blob) => {
+        const fileURL = window.URL.createObjectURL(blob);
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = "Devanshu_Resume.pdf";
+        alink.click();
+        alert("Devanshu Resume Downloaded!!");
+      });
     });
-};
+  };
 
   return (
-    <div className="app">
+    <div>
       <nav className="navbar">
         <div className="logo">Devanshu</div>
-        <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-          <li><a href="#about">About</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
+        <div className="navbar-right">
+          <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <button
+            className="dark-mode-toggle"
+            onClick={toggleDarkMode}
+            aria-label="Toggle dark mode"
+            title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+          <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </nav>
 
       <section className="hero">
@@ -123,8 +137,6 @@ function App() {
               <button  className="btn third" onClick={onButtonClick}>
                 Resume
               </button>
-        
-
             </div>
           </div>
         </div>
@@ -147,55 +159,54 @@ function App() {
       </section>
 
       <section id="projects" className="section">
-  <h2>Featured Projects</h2>
-  <div className="projects-grid">
-    {[
-      {
-        id: 1,
-        title: "Weather Web",
-        description: "This website shows the current time weather of your location. Using the weather API to fetch the data and display it accordingly.",
-        imageUrl: "/Weather.png",
-
-        tags: ["HTML", "CSS", "JavaScript"]
-      },
-      {
-        id: 2,
-        title: "Emotion Detector",
-        description: "This website uses IBM’s watson API to detect the text and then analyze it according to tone of the text.",
-        
-        tags: ["HTML","CSS","Python", "Flask"]
-      },
-      {
-        id: 3,
-        title: "AlumNexus",
-        description: " Developed a full-stack web application to connect alumni, students, and faculty, featuring Firebase Authentication, MongoDB, and a React.js frontend. Built a Node.js & Express.js backend for networking, job postings, donations.",
-        
-        tags: ["ReactJS", "Node.js"]
-      }
-    ].map((project) => (
-      <div key={project.id} className="project-card">
-        <img 
-          src={project.imageUrl}
-          alt={project.title}
-        />
-        <div className="project-info">
-          <h3>{project.title}</h3>
-          <p>{project.description}</p>
-          <div className="project-footer">
-            <div className="project-tags">
-              {project.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
+        <h2>Featured Projects</h2>
+        <div className="projects-grid">
+          {[
+            {
+              id: 1,
+              title: "Weather Web",
+              description: "This website shows the current time weather of your location. Using the weather API to fetch the data and display it accordingly.",
+              imageUrl: "/Weather.png",
+              tags: ["HTML", "CSS", "JavaScript"]
+            },
+            {
+              id: 2,
+              title: "Emotion Detector",
+              description: "This website uses IBM’s watson API to detect the text and then analyze it according to tone of the text.",
+              tags: ["HTML","CSS","Python", "Flask"]
+            },
+            {
+              id: 3,
+              title: "SDC Platform",
+              description: " This is Student Development Cell platform for KJSCE.",
+              tags: ["ReactJS", "Node.js","MongoDB"]
+            }
+          ].map((project) => (
+            <div key={project.id} className="project-card">
+              {project.imageUrl && (
+                <img 
+                  src={project.imageUrl}
+                  alt={project.title}
+                />
+              )}
+              <div className="project-info">
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <div className="project-footer">
+                  <div className="project-tags">
+                    {project.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <a href="#" className="project-link">
+                    <ExternalLink size={20} />
+                  </a>
+                </div>
+              </div>
             </div>
-            <a href="#" className="project-link">
-              <ExternalLink size={20} />
-            </a>
-          </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-</section>
+      </section>
 
       <section id="experience" className="section">
         <h2>Experience</h2>
