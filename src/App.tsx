@@ -59,12 +59,12 @@ function App() {
   ];
 
   const onButtonClick = () => {
-    fetch("Devanshu_Resume.pdf").then((response) => {
+    fetch("Devanshu_Desai_Resume_e.pdf").then((response) => {
       response.blob().then((blob) => {
         const fileURL = window.URL.createObjectURL(blob);
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = "Devanshu_Resume.pdf";
+        alink.download = "Devanshu_Desai_Resume_e.pdf";
         alink.click();
         alert("Devanshu Resume Downloaded!!");
       });
@@ -163,24 +163,33 @@ function App() {
         <div className="projects-grid">
           {[
             {
-              id: 1,
+              id:1,
+              title :"Skillitron",
+              description:"Developed a responsive skill management platform using React and CSS, enabling users to track, filter, and update their learning progress. Integrated YouTube API for curated resource recommendations, implemented dynamic UI features for an engaging user experience, and included secure Google Sign-In for seamless authentication.",              imageUrl:"/Skillify.png",
+              tags: ["React", "Firebase"],
+              link:"https://skillitroon.netlify.app/"
+            },
+            {
+              id: 2,
               title: "Weather Web",
               description: "This website shows the current time weather of your location. Using the weather API to fetch the data and display it accordingly.",
               imageUrl: "/Weather.png",
               tags: ["HTML", "CSS", "JavaScript"]
             },
             {
-              id: 2,
+              id: 3,
               title: "Emotion Detector",
               description: "This website uses IBM’s watson API to detect the text and then analyze it according to tone of the text.",
               tags: ["HTML","CSS","Python", "Flask"]
             },
+            /*
             {
-              id: 3,
+              id: 4,
               title: "SDC Platform",
               description: " This is Student Development Cell platform for KJSCE.",
               tags: ["ReactJS", "Node.js","MongoDB"]
             }
+              */
           ].map((project) => (
             <div key={project.id} className="project-card">
               {project.imageUrl && (
@@ -198,7 +207,7 @@ function App() {
                       <span key={tag}>{tag}</span>
                     ))}
                   </div>
-                  <a href="#" className="project-link">
+                  <a href={project.link} className="project-link" target="_blank" rel="noopener noreferrer">
                     <ExternalLink size={20} />
                   </a>
                 </div>
